@@ -1,0 +1,3 @@
+for f in $( find ~/.dotfiles/private -type f -exec echo {} \; | sort ); do 
+  source $f; 
+done
