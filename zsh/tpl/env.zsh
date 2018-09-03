@@ -19,7 +19,3 @@ if which jenv > /dev/null; then
    eval "export JAVA_HOME=$( orig_jenv javahome )"
   }
 fi
-
-# base16 integration
-BASE16_SHELL=~/.dotfiles/base16-shell
-[ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] &&  eval "$("$BASE16_SHELL/profile_helper.sh")"
