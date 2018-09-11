@@ -12,7 +12,8 @@ rm -fR $WORKDIR
 
 git clone git@github.com:chriskempson/base16-shell.git ${WORKDIR}/base16-shell
 
-BASE16_SHELL=${WORKDIR}/base16-shell DOLLAR='$' envsubst < $TPL/conf.zsh >> ~/.dotfiles/zsh/workdir/.my-zshrc
+# $EXTRA_ZSH_CONFIGS will be exported to env
+BASE16_SHELL=${WORKDIR}/base16-shell DOLLAR='$' envsubst < $TPL/conf.zsh >> ${EXTRA_ZSH_CONFIGS}/base16-conf.zsh
 
 # set my fav theme
 pushd ~ > /dev/null

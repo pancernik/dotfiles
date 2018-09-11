@@ -1,0 +1,2 @@
+# vi rulzes
+zstyle ':prezto:module:editor' key-bindings 'vi'

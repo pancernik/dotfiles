@@ -25,19 +25,32 @@ for f in ${WORKDIR}/.zprezto/runcoms/z*; do
   cp $f ${WORKDIR}/${dst}
 done
 
+# extra config
+extra=${WORKDIR}/extra
+mkdir -p $extra 
 
-# combine user config files and source
-myzshrc=${WORKDIR}/.my-zshrc
-touch $myzshrc
+# extra zpreztorc config
+cp ${TPL}/my-zpreztorc ${extra}/.my-zpreztorc
+(echo; echo "source ${extra}/.my-zpreztorc"; echo) >> ${WORKDIR}/.zpreztorc
 
+# extra zsh config
+pushd $extra > /dev/null
 for f in ${TPL}/*.zsh; do 
-  (echo "# contents of ${f}"; echo; cat ${f}; echo) >> $myzshrc
+  ln -fs $f $( basename $f )
+done
+popd > /dev/null
+
+cat >> ${WORKDIR}/.zshrc << EOF
+
+# extra zsh configs 
+for f in ${extra}/*.zsh; do
+  source \$f
 done
 
-(echo; echo "source ${myzshrc}"; echo) >> ${WORKDIR}/.zshrc
+# let others know the dir for extra zsh configs 
+export EXTRA_ZSH_CONFIGS=${extra}
 
-cp ${TPL}/my-zpreztorc ${WORKDIR}/.my-zpreztorc
-(echo; echo "source ${WORKDIR}/.my-zpreztorc"; echo) >> ${WORKDIR}/.zpreztorc
+EOF
 
 echo "...done"
 echo
