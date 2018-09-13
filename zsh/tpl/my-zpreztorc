@@ -1,2 +1,18 @@
-# vi rulzes
+# modules
+zstyle ':prezto:load' pmodule \
+  'environment' \
+  'terminal' \
+  'editor' \
+  'syntax-highlighting' \
+  'history' \
+  'history-substring-search' \
+  'autosuggestions' \
+  'directory' \
+  'spectrum' \
+  'utility' \
+  'completion' \
+  'prompt'
+
+# vi rulez
 zstyle ':prezto:module:editor' key-bindings 'vi'
+
