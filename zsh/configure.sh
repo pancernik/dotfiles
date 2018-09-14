@@ -15,23 +15,29 @@ git clone --recursive https://github.com/sorin-ionescu/prezto.git ${WORKDIR}/.zp
 # zsh loads ~/.zshenv first and then loads from ${ZDOTDIR}
 rm -fR ~/.zshenv
 cat > ~/.zshenv << EOF
-# custom location for zsh & zprezto conf
+# custom location for zsh & prezto conf
 export ZDOTDIR=${WORKDIR}
 EOF
 
-# copy zprezto's config files to our ZDOTDIR
+# link prezto's config files to our ZDOTDIR
+pushd ${WORKDIR}
 for f in ${WORKDIR}/.zprezto/runcoms/z*; do
-  dst=.$(basename $f)
-  cp $f ${WORKDIR}/${dst}
+  ln -fs $f ".$( basename $f )"
 done
+popd > /dev/null
 
 # extra config
 extra=${WORKDIR}/extra
 mkdir -p $extra 
 
-# extra zpreztorc config
-cp ${TPL}/my-zpreztorc ${extra}/.my-zpreztorc
-(echo; echo "source ${extra}/.my-zpreztorc"; echo) >> ${WORKDIR}/.zpreztorc
+# extra prezto config
+cp ${TPL}/my-zpreztorc ${extra}/my-zpreztorc
+cat >> ${WORKDIR}/.zpreztorc <<-EOF
+
+# extra prezto configs
+source ${extra}/my-zpreztorc
+
+EOF
 
 # extra zsh config
 pushd $extra > /dev/null
@@ -40,9 +46,9 @@ for f in ${TPL}/*.zsh; do
 done
 popd > /dev/null
 
-cat >> ${WORKDIR}/.zshrc << EOF
+cat >> ${WORKDIR}/.zshrc <<-EOF
 
-# extra zsh configs 
+# extra zsh config 
 for f in ${extra}/*.zsh; do
   source \$f
 done
