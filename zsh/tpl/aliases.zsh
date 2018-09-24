@@ -71,7 +71,7 @@ random-string() {
 alias myip='wget http://ipinfo.io/ip -qO - | tr "\n" " "'
 
 ve-create() {
-  virtualenv ~/.venvs/$1
+  python3 -m venv ~/.venvs/$1
 }
 
 ve-activate() {
@@ -108,3 +108,5 @@ gogo() {
 alias b64=base64
 
 alias python=python3
+
+alias go-panc=/Users/pancernik/Projects/go/src/github.com/pancernik
