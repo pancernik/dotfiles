@@ -1,6 +1,8 @@
-brew install python3
-pip3 install powerline
-brew install fzf
+python3
+fzf
 
 iterm
 fonts
+
+map caps look to ctrl
+
