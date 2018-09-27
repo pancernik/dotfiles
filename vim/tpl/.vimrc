@@ -20,6 +20,7 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'itchyny/lightline.vim'
+Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-fugitive'
 Plugin 'mhinz/vim-signify' 
@@ -50,6 +51,9 @@ set autoread
 
 " Backspace through everything
 set backspace=indent,eol,start
+" Don't stop at first/last character in line. <> are cursor keys in normal and visual mode. [] in insert mode.
+set whichwrap+=<,>,h,l,[,]
+
 
 " Keep 100 lines of cmd history
 set history=100
