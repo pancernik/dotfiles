@@ -30,6 +30,7 @@ Plugin 'yegappan/mru'
 
 " languages
 Plugin 'fatih/vim-go'
+Plugin 'vim-scripts/indentpython.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()
@@ -48,6 +49,8 @@ map <leader>q :q<cr>
 
 " Re-read when change outside
 set autoread
+
+"
 
 " Backspace through everything
 set backspace=indent,eol,start
@@ -177,3 +180,19 @@ nmap <leader>mr :MRU<cr>
 
 " vim-signify
 let g:signify_realtime = 1
+
+" languages config
+
+" vim-go
+let g:go_fmt_command = "goimports"
+let g:go_autodetect_gopath = 1
+let g:go_list_type = "quickfix"
+
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_generate_tags = 1
+
+
