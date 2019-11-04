@@ -17,7 +17,7 @@ alias mdt='mvn dependency:tree'
 alias m=mvn
 
 mvn-dbg() {
-  export OLD_MAVEN_OPTS="$MAVEN_OPTS"  
+  export OLD_MAVEN_OPTS="$MAVEN_OPTS"
   export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y"
 }
 
@@ -51,7 +51,7 @@ alias gpsh='git push'
 alias gstsh='git stash'
 
 function in-all-subdirs() {
-  for d in $( ls . ); do 
+  for d in $( ls . ); do
     [ -d $d ] && pushd $d && pwd && $@ && popd
   done
 }
@@ -65,13 +65,17 @@ memory-usage() {
 }
 
 random-string() {
-    head /dev/urandom | tr -dc A-Za-z0-9 | head -c $1 
+    head /dev/urandom | tr -dc A-Za-z0-9 | head -c $1
 }
 
 alias myip='wget http://ipinfo.io/ip -qO - | tr "\n" " "'
 
 ve-create() {
   python3 -m venv ~/.venvs/$1
+}
+
+ve-create-py2() {
+  virtualenv -p $( which python2 ) ~/.venvs/$1
 }
 
 ve-activate() {
@@ -82,13 +86,18 @@ ve-deactivate() {
   deactivate
 }
 
+alias pyt='python -m unittest'
+
 timestamp() {
   $( date +%s%N )/1000000
 }
 
 alias d=docker
-alias dc=docker-compose 
+alias dc=docker-compose
 alias k=kubectl
+
+alias kctx=kubectx
+alias kns=kubens
 
 locations() {
     case $1 in
@@ -99,7 +108,7 @@ locations() {
     esac
 }
 
-alias v=vim
+alias v=nvim
 
 gogo() {
   cd $GOPATH
@@ -107,6 +116,10 @@ gogo() {
 
 alias b64=base64
 
-alias python=python3
-
 alias go-panc=/Users/pancernik/Projects/go/src/github.com/pancernik
+
+make-list() {
+  make -qp | awk -F':' '/^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {split($1,A,/ /);for(i in A)print A[i]}' | sort -u | grep -v Makefile
+}
+
+alias go=richgo

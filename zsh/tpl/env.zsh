@@ -4,18 +4,19 @@ export SHELL=/bin/zsh
 
 if which go > /dev/null; then
   export GOPATH=$HOME/Projects/go
-  PATH=$GOPATH/bin:$PATH
+  export PATH=$GOPATH/bin:$PATH
 fi
 
-if which jenv > /dev/null; then 
-  which orig_jenv > /dev/null || alias orig_jenv=$( which jenv )
- 
-  eval "$(orig_jenv init -)";
-  export PATH=$HOME/.jenv/bin:$PATH
-  
-
-  jenv() {
-    eval "orig_jenv $@"
-   eval "export JAVA_HOME=$( orig_jenv javahome )"
-  }
+if which kubectl > /dev/null; then
+  source <(kubectl completion zsh)
 fi
+
+if [ -d "$HOME/.yarn" ]; then
+  export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+fi
+
+if which rbenv > /dev/null; then
+  eval "$(rbenv init -)"
+fi
+
+export PATH="${PATH}:${HOME}/Library/Python/3.7/bin"

@@ -17,6 +17,11 @@ rm -fR ~/.zshenv
 cat > ~/.zshenv << EOF
 # custom location for zsh & prezto conf
 export ZDOTDIR=${WORKDIR}
+# standard location for the history
+export HISTFILE=~/.zsh_history
+# unlimited history
+export HISTSIZE=999999999
+export SAVEHIST=999999999
 EOF
 
 # link prezto's config files to our ZDOTDIR

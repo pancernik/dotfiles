@@ -1,12 +1,16 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
-set -euo pipefail
+set -eo pipefail
 
 echo "Configuring private zsh configs..."
 
-dirs=(~/.simba-dotfiles) 
+dirs=("")
 
-# link custom zsh config into zsh extra configs 
+if [ ! "$dirs" ]; then
+  exit
+fi
+
+# link custom zsh config into zsh extra configs
 pushd $EXTRA_ZSH_CONFIGS > /dev/null
 for d in $dirs; do
   if [ -d $d ]; then
@@ -14,7 +18,7 @@ for d in $dirs; do
     for f in $(ls ${d}/zsh/*.zsh); do
       ln -fs $f "${dname}-$(basename $f)"
     done
-  else 
+  else
     echo "Directory ${d} doesn't exist"
   fi
 done

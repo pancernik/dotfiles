@@ -3,21 +3,28 @@
 set -euo pipefail
 
 BASE_PATH=~/.dotfiles/vim
-WORKDIR_PATH=$BASE_PATH/workdir
-TPL_PATH=$BASE_PATH/tpl
-VUNDLE_PATH=$WORKDIR_PATH/.vundle
+TPL_PATH=${BASE_PATH}/tpl
+WORKDIR_PATH=~/.vim
+VIMRC=~/.vimrc
 
 echo "Configuring vim..."
 
-rm -fR $WORKDIR_PATH
- rm -f ~/.vimrc
+rm -fR ${WORKDIR_PATH}
+rm ${VIMRC}
 
-mkdir -p $WORKDIR_PATH
-mkdir -p $VUNDLE_PATH
+# Coc installs yarn. That's a bit annoying, but as I don't use it for anything else atm, I can live with it.
+rm -fR ~/.yarn
 
-git clone git@github.com:VundleVim/Vundle.vim.git $VUNDLE_PATH/Vundle.vim
-VUNDLE_PATH=$VUNDLE_PATH envsubst < $TPL_PATH/.vimrc > ~/.vimrc
-vim +PluginInstall +qall <<< "\n" # ENTER to ignore first time warnings 
+mkdir -p ${WORKDIR_PATH}
+
+WORKDIR_PATH=$WORKDIR_PATH envsubst < $TPL_PATH/.vimrc > ${VIMRC}
+
+echo "Installing plugins..."
+curl -fLo ${WORKDIR_PATH}/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+vim +PlugInstall +qall <<< "\n" # ENTER to ignore first time warnings
+
+cp ${BASE_PATH}/tpl/coc-settings.json ${WORKDIR_PATH}
 
 echo "...done"
 echo

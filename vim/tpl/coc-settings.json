@@ -1,0 +1,10 @@
+{
+  "diagnostic.refreshOnInsertMode": true,
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "filetypes": ["go"],
+      "rootPatterns": ["go.mod", ".git/"]
+    }
+  }
+}

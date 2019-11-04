@@ -1,4 +1,4 @@
-" disable vi comaptibility mode 
+
 set nocompatible
 
 " disable filetype plugins
@@ -7,39 +7,42 @@ filetype off
 
 """ Plugins
 
-" set the runtime path to include Vundle and initialize
-set rtp+=${VUNDLE_PATH}/Vundle.vim
-call vundle#begin('${VUNDLE_PATH}')
+" Directory for plugins
+call plug#begin('${WORKDIR_PATH}/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'mileszs/ack.vim'
-Plugin 'chriskempson/base16-vim'
-Plugin 'junegunn/fzf.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'itchyny/lightline.vim'
-Plugin 'tpope/vim-abolish'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-fugitive'
-Plugin 'mhinz/vim-signify' 
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'yegappan/mru'
+Plug 'mileszs/ack.vim'
+Plug 'chriskempson/base16-vim'
+Plug 'junegunn/fzf.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'itchyny/lightline.vim'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'majutsushi/tagbar'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'chaoren/vim-wordmotion'
 
 " languages
-Plugin 'fatih/vim-go'
-Plugin 'vim-scripts/indentpython.vim'
+Plug '~/Projects/github.com/pancernik/coc.nvim'
 
-" All of your Plugins must be added before the following line
-call vundle#end()
+" Typescript
+Plug 'leafgarland/typescript-vim'
+
+" Go
+Plug 'fatih/vim-go'
+
+" Init plugins
+call plug#end()
 
 """ Generic
 " Filetype plugins
 filetype plugin indent on
 
-" Easy leader 
+" Easy leader
 let mapleader = ","
 
 " Fast save
@@ -50,12 +53,16 @@ map <leader>q :q<cr>
 " Re-read when change outside
 set autoread
 
-"
-
 " Backspace through everything
 set backspace=indent,eol,start
 " Don't stop at first/last character in line. <> are cursor keys in normal and visual mode. [] in insert mode.
 set whichwrap+=<,>,h,l,[,]
+
+" Disable arrow keys
+noremap <Up> <nop>
+noremap <Down> <nop>
+noremap <Left> <nop>
+noremap <Right> <nop>
 
 
 " Keep 100 lines of cmd history
@@ -79,14 +86,24 @@ set nobackup
 set nowb
 set noswapfile
 
- 
+" Faster scroll
+" set ttyfast
+" set lazyredraw
+
+" System clipboard
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
+
 
 """ Look & feel
 
-" Syntax highlighting in GUI or term with colours
-if &t_Co > 2 || has("gui_running")
-  syntax on
-endif
+" Terminal supports 256 colours
+set t_Co=256
+
+" Syntax highlighting
+syntax on
 
 " Integrate with base16 shell colours
 if filereadable(expand("~/.vimrc_background"))
@@ -117,17 +134,28 @@ set tabstop=2
 " Linebreak & wrapping
 set wrap
 set lbr
-set tw=180
+set tw=120
+
+" show column
+set colorcolumn=120
 
 " Auto- and smartindent
 set ai
 set si
 
+" Remove whitespace on save
+fun! <SID>StripTrailingWhitespaces()
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  call cursor(l, c)
+endfun
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
 """ Plugins config
 
 " Ack.vim
-nmap <leader>Ack :!<Space>
+nmap <leader>ag :!<Space>
 " Use silver searcher.
 if executable('ag')
   let g:ackprg = 'ag --vimgrep'
@@ -141,14 +169,16 @@ nmap <leader>fz :Files<cr>
 " ligthline.vim
 " lightline contains it already
 set noshowmode
-" Always display status 
+" Always display status
 set laststatus=2
 
 let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
+      \ 'colorscheme': 'wombat',
       \ 'active': {
-      \   'left': [ ['mode', 'paste'],
-      \             ['fugitive', 'readonly', 'filename', 'modified'] ],
+      \   'left': [
+      \             ['mode', 'paste'],
+      \             ['cocstatus', 'fugitive', 'readonly', 'filename', 'modified'],
+      \           ],
       \   'right': [ [ 'lineinfo' ], ['percent'] ]
       \ },
       \ 'component': {
@@ -161,8 +191,9 @@ let g:lightline = {
       \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
-      \ 'separator': { 'left': ' ', 'right': ' ' },
-      \ 'subseparator': { 'left': ' ', 'right': ' ' }
+      \ 'component_function': {
+      \   'cocstatus': 'coc#status'
+      \ }
       \ }
 
 " NERDTree
@@ -170,7 +201,7 @@ let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let NERDTreeShowHidden=1
 
 let g:NERDTreeWinSize=45
-let g:NERDTreeWinPos = "right"
+let g:NERDTreeWinPos="left"
 
 nmap <leader>nn :NERDTreeToggle<cr>
 nmap <leader>nf :NERDTreeFind<cr>
@@ -183,16 +214,47 @@ let g:signify_realtime = 1
 
 " languages config
 
-" vim-go
-let g:go_fmt_command = "goimports"
+" jsoc comments highlighting
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" coc
+if filereadable(expand("~/.vim/coc-settings.json"))
+  " Gotos
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gt <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+
+  " Rename current word
+  nmap ,r <Plug>(coc-rename)
+
+  " Docs
+  nmap <silent> gh :call CocAction('doHover')<CR>
+  nmap <silent> go :CocList outline<CR>
+  nmap <silent> gs :CocList -I symbols<CR>
+endif
+
+" go-vim
 let g:go_autodetect_gopath = 1
-let g:go_list_type = "quickfix"
+let g:go_jump_to_error = 0
+
+let g:go_def_mapping_enabled = 0
+let g:go_info_mode = 'gopls'
+
+let g:go_fmt_command = 'goimports'
+let g:go_fmt_autosave = 1
+
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_command = 'golangci-lint run'
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
+let g:go_highlight_function_parameters = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_generate_tags = 1
 
+autocmd FileType go nmap <leader>a  <Plug>(go-alternate)
 
+" python
