@@ -10,7 +10,7 @@ VIMRC=~/.vimrc
 echo "Configuring vim..."
 
 rm -fR ${WORKDIR_PATH}
-rm ${VIMRC}
+rm -f ${VIMRC}
 
 # Coc installs yarn. That's a bit annoying, but as I don't use it for anything else atm, I can live with it.
 rm -fR ~/.yarn

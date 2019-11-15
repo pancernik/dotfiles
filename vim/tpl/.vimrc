@@ -1,4 +1,3 @@
-
 set nocompatible
 
 " disable filetype plugins
@@ -27,7 +26,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'chaoren/vim-wordmotion'
 
 " languages
-Plug '~/Projects/github.com/pancernik/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Typescript
 Plug 'leafgarland/typescript-vim'
@@ -106,8 +105,8 @@ set t_Co=256
 syntax on
 
 " Integrate with base16 shell colours
+let base16colorspace=256
 if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
   source ~/.vimrc_background
 endif
 
