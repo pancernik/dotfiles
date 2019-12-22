@@ -9,9 +9,9 @@ filetype off
 " Directory for plugins
 call plug#begin('${WORKDIR_PATH}/plugged')
 
-Plug 'mileszs/ack.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'junegunn/fzf.vim'
+Plug 'jremmen/vim-ripgrep'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'itchyny/lightline.vim'
@@ -90,11 +90,10 @@ set noswapfile
 " set lazyredraw
 
 " System clipboard
-noremap <Leader>y "*y
-noremap <Leader>p "*p
-noremap <Leader>Y "+y
-noremap <Leader>P "+p
-
+noremap <leader>y "*y
+noremap <leader>p "*p
+noremap <leader>Y "+y
+noremap <leader>P "+p
 
 """ Look & feel
 
@@ -160,16 +159,18 @@ if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-" fzf
-" Installed by homebrew
+" fzf (needs to be installed)
 set rtp+=/usr/local/opt/fzf
 nmap <leader>fz :Files<cr>
+
+" ripgrep (needs to be installed)
+nmap <leader>rg :Rg<space>
 
 " ligthline.vim
 " lightline contains it already
 set noshowmode
 " Always display status
-set laststatus=2
+set laststatus=1
 
 let g:lightline = {
       \ 'colorscheme': 'wombat',
@@ -205,6 +206,11 @@ let g:NERDTreeWinPos="left"
 nmap <leader>nn :NERDTreeToggle<cr>
 nmap <leader>nf :NERDTreeFind<cr>
 
+"git / fugitive
+nmap <leader>gs :G<cr>
+nmap <leader>gd :Gdiffsplit<cr>
+nmap <leader>gb :Gblame<cr>
+
 " MRU
 nmap <leader>mr :MRU<cr>
 
@@ -225,7 +231,7 @@ if filereadable(expand("~/.vim/coc-settings.json"))
   nmap <silent> gr <Plug>(coc-references)
 
   " Rename current word
-  nmap ,r <Plug>(coc-rename)
+  nmap <leader>rn <Plug>(coc-rename)
 
   " Docs
   nmap <silent> gh :call CocAction('doHover')<CR>
