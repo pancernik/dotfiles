@@ -48,6 +48,8 @@ let mapleader = ","
 map <leader>w :w!<cr>
 " Fast quit
 map <leader>q :q<cr>
+" Fast nohlsearch
+map <leader>nh :nohlsearch<cr>
 
 " Re-read when change outside
 set autoread
@@ -62,7 +64,6 @@ noremap <Up> <nop>
 noremap <Down> <nop>
 noremap <Left> <nop>
 noremap <Right> <nop>
-
 
 " Keep 100 lines of cmd history
 set history=100
@@ -200,7 +201,7 @@ let g:lightline = {
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let NERDTreeShowHidden=1
 
-let g:NERDTreeWinSize=45
+let g:NERDTreeWinSize=35
 let g:NERDTreeWinPos="left"
 
 nmap <leader>nn :NERDTreeToggle<cr>

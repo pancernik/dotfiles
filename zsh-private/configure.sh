@@ -4,7 +4,7 @@ set -eo pipefail
 
 echo "Configuring private zsh configs..."
 
-dirs=("")
+dirs=("${HOME}/.s19-tech-dotfiles")
 
 if [ ! "$dirs" ]; then
   exit
