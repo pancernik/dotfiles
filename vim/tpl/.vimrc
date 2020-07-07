@@ -24,6 +24,7 @@ Plug 'tpope/vim-repeat'
 Plug 'majutsushi/tagbar'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'chaoren/vim-wordmotion'
+Plug 'hashivim/vim-terraform'
 
 " languages
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -220,7 +221,7 @@ let g:signify_realtime = 1
 
 " languages config
 
-" jsoc comments highlighting
+" json comments highlighting
 autocmd FileType json syntax match Comment +\/\/.\+$+
 
 " coc
@@ -251,7 +252,8 @@ let g:go_fmt_command = 'goimports'
 let g:go_fmt_autosave = 1
 
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_command = 'golangci-lint run'
+let g:go_metalinter_command = 'golangci-lint'
+let g:go_list_height = 10
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
@@ -264,3 +266,6 @@ let g:go_highlight_generate_tags = 1
 autocmd FileType go nmap <leader>a  <Plug>(go-alternate)
 
 " python
+
+" terraform
+let g:terraform_fmt_on_save = 1

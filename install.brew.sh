@@ -3,11 +3,11 @@
 set -euo pipefail
 
 echo "Removing..."
-brew remove vim
-brew remove nvim
-brew remove zsh
-brew remove tmux
-brew remove curl
+brew remove vim || true
+brew remove nvim || true
+brew remove zsh || true
+brew remove tmux || true
+brew remove curl || true
 
 echo "Installing..."
 brew install vim

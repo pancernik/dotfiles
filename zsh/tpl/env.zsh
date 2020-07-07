@@ -29,9 +29,10 @@ fi
 
 export PATH="${PATH}:${HOME}/bin"
 
+GCLOUD_SDK="${HOME}/.config/google-cloud-sdk"
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f "${HOME}/google-cloud-sdk/path.zsh.inc" ]; then . "${HOME}/google-cloud-sdk/path.zsh.inc"; fi
+if [ -f "${GCLOUD_SDK}/path.zsh.inc" ]; then . "${GCLOUD_SDK}/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f "${HOME}/google-cloud-sdk/completion.zsh.inc" ]; then . "${HOME}/google-cloud-sdk/completion.zsh.inc"; fi
+if [ -f "${GCLOUD_SDK}/completion.zsh.inc" ]; then . "${GCLOUD_SDK}/completion.zsh.inc"; fi
 
