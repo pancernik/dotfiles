@@ -1,9 +1,13 @@
-export EDITOR=/usr/local/bin/vim
-export VISUAL=/usr/local/bin/vim
+export EDITOR=/usr/local/bin/nvim
+export VISUAL=/usr/local/bin/nvim
 export SHELL=/bin/zsh
 
+HISTFILE=${HOME}/.zsh_history
+HISTSIZE=10000
+SAVEHIST=1000
+setopt SHARE_HISTORY
+
 if which go > /dev/null; then
-  export GOPATH="${HOME}/Projects/go"
   export PATH="${PATH}:${GOPATH}/bin"
 fi
 

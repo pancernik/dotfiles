@@ -7,34 +7,6 @@ alias l='ls -AF'
 
 alias gr='./gradlew '
 
-alias mci='mvn clean install'
-alias mi='mvn install'
-alias mcinot='mvn clean install -DskipTests'
-alias minot='mvn install -DskipTests'
-alias mvu='mvn versions:display-dependency-updates'
-alias mt='mvn test'
-alias mdt='mvn dependency:tree'
-alias m=mvn
-
-mvn-dbg() {
-  export OLD_MAVEN_OPTS="$MAVEN_OPTS"
-  export MAVEN_OPTS="$MAVEN_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=8001,server=y,suspend=y"
-}
-
-no-mvn-dbg() {
-  export MAVEN_OPTS="$OLD_MAVEN_OPTS"
-  export OLD_MAVEN_OPTS=""
-}
-
-alias bi='bundle install'
-alias bs='bundle show'
-alias b='bundle'
-alias bu='bundle update'
-alias be='bundle exec'
-alias bers='bundle exec rspec'
-alias bc='bundle console'
-alias bec='bundle exec cucumber'
-
 alias htop='sudo htop'
 
 alias s='sudo '
@@ -99,15 +71,6 @@ alias k=kubectl
 alias kctx=kubectx
 alias kns=kubens
 
-locations() {
-    case $1 in
-    jvms) /Library/Java/JavaVirtualMachines
-    ;;
-    *) echo "What are you looking for?"
-    ;;
-    esac
-}
-
 alias v=nvim
 
 gogo() {
@@ -115,8 +78,6 @@ gogo() {
 }
 
 alias b64=base64
-
-alias go-panc=/Users/pancernik/Projects/go/src/github.com/pancernik
 
 make-list() {
   make -qp | awk -F':' '/^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ {split($1,A,/ /);for(i in A)print A[i]}' | sort -u | grep -v Makefile
