@@ -3,8 +3,16 @@
   "languageserver": {
     "golang": {
       "command": "gopls",
+      "args": ["serve",  "-logfile", "/tmp/gopls.log", "-rpc.trace"],
       "filetypes": ["go"],
-      "rootPatterns": ["go.mod", ".git/"]
-    }
+      "rootPatterns": ["main.go"],
+      "requireRootPattern": true,
+      "disableWorkspaceFolders": true,
+			"initializationOptions": {
+        "experimentalPackageCacheKey": true,
+        "verboseOutput": true
+			},
+      "ignoredRootPaths": ["/Users/rafalwicha/src/github.com/monzo/wearedev"]
+		}
   }
 }

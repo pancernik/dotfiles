@@ -12,8 +12,9 @@ call plug#begin('${WORKDIR_PATH}/plugged')
 Plug 'chriskempson/base16-vim'
 Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/nerdcommenter'
+Plug 'preservim/nerdtree'
+Plug 'preservim/nerdcommenter'
+Plug 'xuyuanp/nerdtree-git-plugin'
 Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-commentary'
@@ -26,8 +27,8 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'chaoren/vim-wordmotion'
 Plug 'hashivim/vim-terraform'
 
-" languages
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" lsp
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 
 " Typescript
 Plug 'leafgarland/typescript-vim'
@@ -202,8 +203,9 @@ let g:lightline = {
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let NERDTreeShowHidden=1
 
-let g:NERDTreeWinSize=35
+let g:NERDTreeWinSize=40
 let g:NERDTreeWinPos="left"
+let g:NERDTreeMinimalUI = 1
 
 nmap <leader>nn :NERDTreeToggle<cr>
 nmap <leader>nf :NERDTreeFind<cr>
@@ -241,15 +243,17 @@ if filereadable(expand("~/.vim/coc-settings.json"))
   nmap <silent> gs :CocList -I symbols<CR>
 endif
 
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+
 " go-vim
 let g:go_autodetect_gopath = 1
 let g:go_jump_to_error = 0
 
 let g:go_def_mapping_enabled = 0
-let g:go_info_mode = 'gopls'
+let g:go_gopls_enabled = 0
 
 let g:go_fmt_command = 'goimports'
-let g:go_fmt_autosave = 1
+let g:go_fmt_autosave = 0
 
 let g:go_metalinter_autosave = 1
 let g:go_metalinter_command = 'golangci-lint'
