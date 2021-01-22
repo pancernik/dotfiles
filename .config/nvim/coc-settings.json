@@ -1,0 +1,19 @@
+{
+  "diagnostic.refreshOnInsertMode": true,
+  "coc.preferences.formatOnSaveFiletypes": ["go"],
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "args": ["serve",  "-logfile", "/tmp/gopls.log", "-rpc.trace"],
+      "filetypes": ["go"],
+      "rootPatterns": ["main.go"],
+      "requireRootPattern": true,
+      "disableWorkspaceFolders": true,
+			"initializationOptions": {
+        "experimentalPackageCacheKey": true,
+        "verboseOutput": true
+			},
+      "ignoredRootPaths": ["/Users/rafalwicha/src/github.com/monzo/wearedev"]
+		}
+  }
+}
