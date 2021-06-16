@@ -28,7 +28,7 @@ Plug 'chaoren/vim-wordmotion'
 Plug 'hashivim/vim-terraform'
 
 " lsp
-Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc.nvim'
 
 " Typescript
 Plug 'leafgarland/typescript-vim'
@@ -203,7 +203,7 @@ let g:lightline = {
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let NERDTreeShowHidden=1
 
-let g:NERDTreeWinSize=40
+let g:NERDTreeWinSize=60
 let g:NERDTreeWinPos="left"
 let g:NERDTreeMinimalUI = 1
 
@@ -241,9 +241,9 @@ if filereadable(expand("~/.vim/coc-settings.json"))
   nmap <silent> gh :call CocAction('doHover')<CR>
   nmap <silent> go :CocList outline<CR>
   nmap <silent> gs :CocList -I symbols<CR>
-endif
 
-autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+  autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+endif
 
 " go-vim
 let g:go_autodetect_gopath = 1
@@ -255,9 +255,8 @@ let g:go_gopls_enabled = 0
 let g:go_fmt_command = 'goimports'
 let g:go_fmt_autosave = 0
 
-let g:go_metalinter_autosave = 1
-let g:go_metalinter_command = 'golangci-lint'
-let g:go_list_height = 10
+" automatically highlight variable your cursor is on
+let g:go_auto_sameids = 0
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1

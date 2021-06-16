@@ -4,24 +4,17 @@ set -eo pipefail
 
 echo "Configuring private zsh configs..."
 
-private_dirs="${HOME}/.zsh-private"
+PRIVATE_DIR="${HOME}/.zsh-private"
 
-if [ ! -e "${private_dirs}" ]; then
+if [ ! -e "${PRIVATE_DIR}" ]; then
   echo "No private zsh configs"
   exit
 fi
 
 # link custom zsh config into zsh extra configs
 pushd ${EXTRA_ZSH_CONFIGS} > /dev/null
-for d in $dirs; do
-  if [ -d $d ]; then
-    dname=$(basename $d | tr -d '.')
-    for f in $(ls ${d}/zsh/*.zsh); do
-      ln -fs $f "${dname}-$(basename $f)"
-    done
-  else
-    echo "Directory ${d} doesn't exist"
-  fi
+find "${PRIVATE_DIR}" -type f -name "*.zsh" -print0 | while IFS= read -r -d '' f; do
+  ln -fs "${f}" "$( echo "${f}" | tr '/' '-' )"
 done
 popd > /dev/null
 
