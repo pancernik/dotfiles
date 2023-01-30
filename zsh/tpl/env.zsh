@@ -40,3 +40,13 @@ if [ -f "${GCLOUD_SDK}/path.zsh.inc" ]; then . "${GCLOUD_SDK}/path.zsh.inc"; fi
 # The next line enables shell command completion for gcloud.
 if [ -f "${GCLOUD_SDK}/completion.zsh.inc" ]; then . "${GCLOUD_SDK}/completion.zsh.inc"; fi
 
+KREW_PATH="${HOME}/.krew/"
+if [ -d "${KREW_PATH}" ]; then
+  export PATH="${PATH}:${KREW_PATH}/bin"
+fi
+
+eval "$(starship init zsh)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion

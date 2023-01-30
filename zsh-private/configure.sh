@@ -14,6 +14,7 @@ fi
 # link custom zsh config into zsh extra configs
 pushd ${EXTRA_ZSH_CONFIGS} > /dev/null
 find "${PRIVATE_DIR}" -type f -name "*.zsh" -print0 | while IFS= read -r -d '' f; do
+  echo "Setting up ${f}"
   ln -fs "${f}" "$( echo "${f}" | tr '/' '-' )"
 done
 popd > /dev/null

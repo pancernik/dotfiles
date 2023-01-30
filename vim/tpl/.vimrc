@@ -9,7 +9,7 @@ filetype off
 " Directory for plugins
 call plug#begin('${WORKDIR_PATH}/plugged')
 
-Plug 'chriskempson/base16-vim'
+Plug 'base16-project/base16-vim'
 Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'
 Plug 'preservim/nerdtree'
@@ -26,12 +26,19 @@ Plug 'majutsushi/tagbar'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'chaoren/vim-wordmotion'
 Plug 'hashivim/vim-terraform'
-
-" lsp
-Plug 'neoclide/coc.nvim'
-
-" Typescript
-Plug 'leafgarland/typescript-vim'
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'dcampos/nvim-snippy'
+Plug 'honza/vim-snippets'
+Plug 'dcampos/cmp-snippy'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/trouble.nvim'
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'MunifTanjim/eslint.nvim'
 
 " Go
 Plug 'fatih/vim-go'
@@ -89,8 +96,8 @@ set nowb
 set noswapfile
 
 " Faster scroll
-" set ttyfast
-" set lazyredraw
+set ttyfast
+set lazyredraw
 
 " System clipboard
 noremap <leader>y "*y
@@ -120,6 +127,10 @@ set foldcolumn=1
 
 " Show cursor position at all times
 set ruler
+" Horitzontal line
+set cursorline
+" Vertical line
+set cursorcolumn
 
 " Show line numbers
 set nu
@@ -135,10 +146,10 @@ set tabstop=2
 " Linebreak & wrapping
 set wrap
 set lbr
-set tw=120
+set tw=160
 
 " show column
-set colorcolumn=120
+set colorcolumn=160
 
 " Auto- and smartindent
 set ai
@@ -154,13 +165,6 @@ endfun
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
 """ Plugins config
-
-" Ack.vim
-nmap <leader>ag :!<Space>
-" Use silver searcher.
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
 
 " fzf (needs to be installed)
 set rtp+=/usr/local/opt/fzf
@@ -180,7 +184,7 @@ let g:lightline = {
       \ 'active': {
       \   'left': [
       \             ['mode', 'paste'],
-      \             ['cocstatus', 'fugitive', 'readonly', 'filename', 'modified'],
+      \             ['fugitive', 'readonly', 'absolutepath', 'modified'],
       \           ],
       \   'right': [ [ 'lineinfo' ], ['percent'] ]
       \ },
@@ -193,9 +197,6 @@ let g:lightline = {
       \   'readonly': '(&filetype!="help"&& &readonly)',
       \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-      \ },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status'
       \ }
       \ }
 
@@ -226,37 +227,18 @@ let g:signify_realtime = 1
 " json comments highlighting
 autocmd FileType json syntax match Comment +\/\/.\+$+
 
-" coc
-if filereadable(expand("~/.vim/coc-settings.json"))
-  " Gotos
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gt <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-
-  " Rename current word
-  nmap <leader>rn <Plug>(coc-rename)
-
-  " Docs
-  nmap <silent> gh :call CocAction('doHover')<CR>
-  nmap <silent> go :CocList outline<CR>
-  nmap <silent> gs :CocList -I symbols<CR>
-
-  autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
-endif
-
 " go-vim
 let g:go_autodetect_gopath = 1
-let g:go_jump_to_error = 0
 
+" disable features provided by LSP
+let g:go_jump_to_error = 0
 let g:go_def_mapping_enabled = 0
 let g:go_gopls_enabled = 0
-
-let g:go_fmt_command = 'goimports'
 let g:go_fmt_autosave = 0
+let g:go_imports_autosave = 0
 
 " automatically highlight variable your cursor is on
-let g:go_auto_sameids = 0
+let g:go_auto_sameids = 1
 
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
@@ -268,7 +250,164 @@ let g:go_highlight_generate_tags = 1
 
 autocmd FileType go nmap <leader>a  <Plug>(go-alternate)
 
-" python
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics{focusable=false}
+
+" nvim-lspconfig
+
+lua << EOF
+
+local lspconfig = require 'lspconfig'
+
+local setup_key_bindings = function(client, bufnr)
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'gh', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', 'gs', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
+
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
+end
+
+
+local cmp = require 'cmp'
+
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      require('snippy').expand_snippet(args.body)
+    end,
+  },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    -- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'snippy' },
+  }, {
+    { name = 'buffer' },
+  })
+}
+
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+-- Go
+lspconfig.gopls.setup {
+  on_attach = setup_key_bindings,
+  capabilities = capabilities,
+  settings = {
+    gopls = {
+      ["local"] = "github.com/ksoc-private,github.com/pancernik",
+      analyses = {
+        nilness = true,
+        unusedparams = true,
+        unusedwrite = true,
+        shadow = true,
+      },
+      staticcheck = true,
+    },
+  },
+}
+
+-- Ruby
+lspconfig.solargraph.setup {
+  on_attach = setup_key_bindings,
+  capabilities = capabilities,
+}
+
+-- Typescript
+lspconfig.tsserver.setup {
+  on_attach = setup_key_bindings,
+  capabilities = capabilities,
+}
+
+-- Eslint
+lspconfig.eslint.setup {
+  on_attach = setup_key_bindings,
+  capabilities = capabilities,
+  bin = 'eslint',
+  code_actions = {
+    enable = true,
+    apply_on_save = {
+      enable = true,
+      types = { "directive", "problem", "suggestion", "layout" },
+    },
+    disable_rule_comment = {
+      enable = true,
+      location = "separate_line", -- or `same_line`
+    },
+  },
+  diagnostics = {
+    enable = true,
+    report_unused_disable_directives = false,
+    run_on = "type", -- or `save`
+  },
+}
+EOF
+
+" Go imports and formatting
+" https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
+
+lua << EOF
+function organize_imports(wait_ms)
+  local params = vim.lsp.util.make_range_params()
+  params.context = {only = {"source.organizeImports"}}
+  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
+
+  for _, res in pairs(result or {}) do
+    for _, r in pairs(res.result or {}) do
+      if r.edit then
+        vim.lsp.util.apply_workspace_edit(r.edit, "UTF-8")
+      else
+        vim.lsp.buf.execute_command(r.command)
+      end
+    end
+  end
+end
+EOF
+
+autocmd BufWritePre *.go :silent! lua vim.lsp.buf.formatting_sync(nil, 3000)
+autocmd BufWritePre *.go :silent! lua organize_imports(3000)
+
+" diagnostics
+
+lua << EOF
+  require("trouble").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
+EOF
+
+nnoremap <leader>tr <cmd>TroubleToggle<cr>
 
 " terraform
 let g:terraform_fmt_on_save = 1

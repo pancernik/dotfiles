@@ -1,4 +1,4 @@
-#!/usr/bin/env bash 
+#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -10,14 +10,14 @@ echo "Configuring base16-shell..."
 
 rm -fR $WORKDIR
 
-git clone git@github.com:chriskempson/base16-shell.git ${WORKDIR}/base16-shell
+git clone git@github.com:base16-project/base16-shell.git ${WORKDIR}/base16-shell
 
 # $EXTRA_ZSH_CONFIGS will be exported to env
 BASE16_SHELL=${WORKDIR}/base16-shell DOLLAR='$' envsubst < $TPL/conf.zsh >> ${EXTRA_ZSH_CONFIGS}/base16-conf.zsh
 
 # set my fav theme
 pushd ~ > /dev/null
-ln -fs ${WORKDIR}/base16-shell/scripts/base16-tomorrow-night.sh .base16_theme 
+ln -fs ${WORKDIR}/base16-shell/scripts/base16-tomorrow-night.sh .base16_theme
 popd > /dev/null
 
 echo "...done"
