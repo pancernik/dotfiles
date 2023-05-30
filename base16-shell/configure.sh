@@ -3,22 +3,17 @@
 set -euo pipefail
 
 BASE_PATH=~/.dotfiles/base16-shell
-WORKDIR=${BASE_PATH}/workdir
+WORKDIR=~/.config/base16-shell
 TPL=${BASE_PATH}/tpl
 
 echo "Configuring base16-shell..."
 
 rm -fR $WORKDIR
+git clone git@github.com:tinted-theming/base16-shell.git ${WORKDIR}
 
-git clone git@github.com:base16-project/base16-shell.git ${WORKDIR}/base16-shell
-
+rm -f ${EXTRA_ZSH_CONFIGS}/base16-conf.zsh
 # $EXTRA_ZSH_CONFIGS will be exported to env
-BASE16_SHELL=${WORKDIR}/base16-shell DOLLAR='$' envsubst < $TPL/conf.zsh >> ${EXTRA_ZSH_CONFIGS}/base16-conf.zsh
-
-# set my fav theme
-pushd ~ > /dev/null
-ln -fs ${WORKDIR}/base16-shell/scripts/base16-tomorrow-night.sh .base16_theme
-popd > /dev/null
+cp $TPL/conf.zsh ${EXTRA_ZSH_CONFIGS}/base16-shell.zsh
 
 echo "...done"
 echo

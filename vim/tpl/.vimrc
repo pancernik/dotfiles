@@ -234,8 +234,8 @@ let g:go_autodetect_gopath = 1
 let g:go_jump_to_error = 0
 let g:go_def_mapping_enabled = 0
 let g:go_gopls_enabled = 0
-let g:go_fmt_autosave = 0
-let g:go_imports_autosave = 0
+" let g:go_fmt_autosave = 0
+" let g:go_imports_autosave = 0
 
 " automatically highlight variable your cursor is on
 let g:go_auto_sameids = 1
@@ -317,7 +317,7 @@ cmp.setup.cmdline(':', {
   })
 })
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Go
 lspconfig.gopls.setup {
@@ -372,30 +372,6 @@ lspconfig.eslint.setup {
   },
 }
 EOF
-
-" Go imports and formatting
-" https://github.com/golang/tools/blob/master/gopls/doc/vim.md#neovim-imports
-
-lua << EOF
-function organize_imports(wait_ms)
-  local params = vim.lsp.util.make_range_params()
-  params.context = {only = {"source.organizeImports"}}
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
-
-  for _, res in pairs(result or {}) do
-    for _, r in pairs(res.result or {}) do
-      if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit, "UTF-8")
-      else
-        vim.lsp.buf.execute_command(r.command)
-      end
-    end
-  end
-end
-EOF
-
-autocmd BufWritePre *.go :silent! lua vim.lsp.buf.formatting_sync(nil, 3000)
-autocmd BufWritePre *.go :silent! lua organize_imports(3000)
 
 " diagnostics
 

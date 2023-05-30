@@ -7,6 +7,8 @@ HISTSIZE=10000
 SAVEHIST=1000
 setopt SHARE_HISTORY
 
+eval "$(starship init zsh)"
+
 if which go > /dev/null; then
   export PATH="${PATH}:${GOPATH}/bin"
 fi
@@ -45,8 +47,12 @@ if [ -d "${KREW_PATH}" ]; then
   export PATH="${PATH}:${KREW_PATH}/bin"
 fi
 
-eval "$(starship init zsh)"
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+export PATH="${PATH}:/usr/local/opt/postgresql@13/bin"
+
+export DOCKER_HOST='unix:///Users/pancernik/.local/share/containers/podman/machine/podman-machine-default/podman.sock'
+
+export GPG_TTY=$(tty)
