@@ -1,0 +1,39 @@
+format = """\
+    📁 $directory\
+    $git_branch\
+    $git_commit\
+    $git_state\
+    $git_status\
+    $kubernetes\
+    $aws\
+    $line_break\
+    $jobs\
+    $character\
+    """
+add_newline = false
+
+[aws]
+force_display = true
+format = '[$symbol ($profile)]($style)'
+symbol = "🌧️ "
+
+[character]
+success_symbol = "💀"
+error_symbol = "❌"
+vicmd_symbol = "📝"
+
+[directory]
+truncate_to_repo = false
+truncation_length = 2
+
+[git_branch]
+format = "[$symbol$branch(:$remote_branch)]($style) "
+
+[kubernetes]
+disabled = false
+format = '[$symbol$context( \($namespace\))]($style) '
+symbol = "🧊 "
+
+# # Disable the package module, hiding it from the prompt completely
+# [package]
+# disabled = true
