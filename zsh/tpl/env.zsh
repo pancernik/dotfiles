@@ -53,6 +53,4 @@ export NVM_DIR="$HOME/.nvm"
 
 export PATH="${PATH}:/usr/local/opt/postgresql@13/bin"
 
-export DOCKER_HOST='unix:///Users/pancernik/.local/share/containers/podman/machine/podman-machine-default/podman.sock'
-
 export GPG_TTY=$(tty)
