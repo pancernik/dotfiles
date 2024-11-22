@@ -20,7 +20,13 @@ alias grh='git reset HEAD'
 alias gpl='git pull'
 alias gpsh='git push'
 
-alias gstsh='git stash'
+alias gsth='git stash'
+
+alias gc='git commit -s'
+
+alias gr='git restore'
+alias grs='git restore --staged'
+
 
 function in-all-subdirs() {
   for d in $( ls . ); do

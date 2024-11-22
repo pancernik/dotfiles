@@ -1,1 +1,0 @@
-/Users/rafalwicha/.zsh-private/.monzo-dotfiles/zsh/aliases.zsh

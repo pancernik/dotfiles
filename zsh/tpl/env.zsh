@@ -1,6 +1,6 @@
-export EDITOR=/usr/local/bin/nvim
-export VISUAL=/usr/local/bin/nvim
-export SHELL=/bin/zsh
+export EDITOR=nvim
+export VISUAL=nvim
+export SHELL=zsh
 
 HISTFILE=${HOME}/.zsh_history
 HISTSIZE=10000
@@ -10,7 +10,7 @@ setopt SHARE_HISTORY
 eval "$(starship init zsh)"
 
 if which go > /dev/null; then
-  export PATH="${PATH}:${GOPATH}/bin"
+  export PATH="${PATH}:$( go env GOPATH )/bin"
 fi
 
 if which kubectl > /dev/null; then

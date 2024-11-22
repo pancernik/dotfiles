@@ -22,7 +22,7 @@ WORKDIR_PATH=$WORKDIR_PATH envsubst < $TPL_PATH/.vimrc > ${VIMRC}
 echo "Installing plugins..."
 curl -fLo ${WORKDIR_PATH}/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-vim +PlugInstall +qall <<< "\n" # ENTER to ignore first time warnings
+nvim +PlugInstall +qall <<< "\n" # ENTER to ignore first time warnings
 
 cp ${BASE_PATH}/tpl/coc-settings.json ${WORKDIR_PATH}
 

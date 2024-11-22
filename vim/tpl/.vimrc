@@ -9,7 +9,7 @@ filetype off
 " Directory for plugins
 call plug#begin('${WORKDIR_PATH}/plugged')
 
-Plug 'base16-project/base16-vim'
+Plug 'tinted-theming/base16-vim'
 Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'
 Plug 'preservim/nerdtree'
@@ -115,8 +115,9 @@ syntax on
 
 " Integrate with base16 shell colours
 let base16colorspace=256
-if filereadable(expand("~/.vimrc_background"))
-  source ~/.vimrc_background
+if exists('\$BASE16_THEME')
+  echo $BASE16_THEME
+  colorscheme base16-\$BASE16_THEME
 endif
 
 " Show matching brackets
