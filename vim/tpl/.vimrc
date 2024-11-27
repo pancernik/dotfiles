@@ -9,7 +9,7 @@ filetype off
 " Directory for plugins
 call plug#begin('${WORKDIR_PATH}/plugged')
 
-Plug 'tinted-theming/base16-vim'
+Plug 'tinted-theming/tinted-vim'
 Plug 'junegunn/fzf.vim'
 Plug 'jremmen/vim-ripgrep'
 Plug 'preservim/nerdtree'
@@ -114,11 +114,8 @@ set t_Co=256
 syntax on
 
 " Integrate with base16 shell colours
-let base16colorspace=256
-if exists('\$BASE16_THEME')
-  echo $BASE16_THEME
-  colorscheme base16-\$BASE16_THEME
-endif
+let tinted_colorspace=256
+colorscheme base16-$BASE16_THEME
 
 " Show matching brackets
 set showmatch
@@ -251,7 +248,7 @@ let g:go_highlight_generate_tags = 1
 
 autocmd FileType go nmap <leader>a  <Plug>(go-alternate)
 
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics{focusable=false}
+autocmd CursorHold * lua vim.diagnostic.open_float()
 
 " nvim-lspconfig
 

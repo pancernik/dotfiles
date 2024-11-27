@@ -17,14 +17,12 @@ rm -fR ~/.yarn
 
 mkdir -p ${WORKDIR_PATH}
 
-WORKDIR_PATH=$WORKDIR_PATH envsubst < $TPL_PATH/.vimrc > ${VIMRC}
+WORKDIR_PATH=$WORKDIR_PATH envsubst '$WORKDIR_PATH' < $TPL_PATH/.vimrc > ${VIMRC}
 
 echo "Installing plugins..."
 curl -fLo ${WORKDIR_PATH}/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-nvim +PlugInstall +qall <<< "\n" # ENTER to ignore first time warnings
-
-cp ${BASE_PATH}/tpl/coc-settings.json ${WORKDIR_PATH}
+nvim +PlugInstall +qall
 
 echo "...done"
 echo
